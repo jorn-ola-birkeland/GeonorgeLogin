@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <title>Logg inn - Geonorge</title>
+        <link href="/fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,700" rel="stylesheet" type="text/css">
+        <link href="//fonts.googleapis.com/css?family=Raleway:400,100,300,500,600,700" rel="stylesheet" type="text/css">
+        <link href="/Content/bower_components/kartverket-felleskomponenter/assets/css/vendor.min.css" rel="stylesheet">
+        <link href="/Content/bower_components/kartverket-felleskomponenter/assets/css/main.min.css" rel="stylesheet">
+        <script>
+	        var applicationEnvironment = 'test';
+        </script>
+        <script src="/Content/bower_components/kartverket-felleskomponenter/assets/js/vendor.min.js"></script>
+        <script src="/Content/bower_components/kartverket-felleskomponenter/assets/js/main.min.js"></script>
+    </head>
+    <body class="geonorge-container prototype geonorge ng-scope" ng-app="geonorge">
+	    
+<header>
+    <div class="container">
+        <div class="row top-row">
+            <div class="col-xs-5">
+                <div class="logo-wrapper">
+                    <div class="geonorge-logo" id="geonorge-logo">
+                        <a href="https://www.geonorge.no/">
+                            <img src="/Content/bower_components/kartverket-felleskomponenter/assets/images/geonorge_logo.svg" width="350" height="55" alt="Logo" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-5">
+                <div class="navbar-header">
+                    <div class="menu-title">
+                        <span class="navbar-toggle">Meny</span>
+                    </div>
+                    <div class="menu-toggle">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-menu" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Meny</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2 navbar-right">
+                <div class="container-login">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-search">
+        <div class="container">
+            <div class="row" data-ng-controller="searchTopController">
+                <div class="col-xs-11 col-md-7 col-md-offset-2 search">
+                    <div class="row">
+                        <div class="col-xs-12 input-group searchbar">
+                            <input autocomplete="off" data-ng-focus="setFocus($event)" data-ng-blur="" data-ng-keyup="autocomplete($event)" data-ng-keydown="preventDefault($event)" data-ng-model="$root.searchQuery" id="txtSearch" type="text" class="form-control search-main ng-valid ng-dirty ng-valid-parse ng-touched" placeholder="S&#248;k etter kartdata">
+                            <div class="input-group-addon">
+                                <div class="autocomplete-loader ng-cloak" ng-cloak ng-show="ajaxCallActive">
+                                    <div class="loader"></div>
+                                </div>
+                            </div>
+                            <span class="input-group-btn">
+                                <div class="search-button-wrapper {{selectedSearch.buttonCss}}" data-ng-submit="Search()">
+                                    <button class="btn btn-default" type="button" data-ng-click="onSearch()">
+                                        <img src="/Images/search_icon-01.svg" alt="search" data-ng-click="onSearch()" />
+                                    </button>
+                                </div>
+                            </span>
+
+                        </div>
+                        <div class="col-xs-12 auto-results-container">
+                            <div ng-show="autocompleteActive" data-ng-cloak class="col-xs-12 auto-results-wrapper ng-cloak">
+                                <div class="auto-results row ng-cloak" data-ng-animate data-ng-cloak data-ng-include="autoCompletePartial">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-1 col-md-3 shopping-cart-container">
+                    <a class="shopping-cart" href="/Download">
+                        <span id="orderitem-count"></span>
+                        <img src="/Images/shopping_cart_968c83_ikon-01.svg" alt="Handlekurv" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container-top-menu">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 top-menu">
+                <nav class="navbar" data-ng-controller="menuTopController" data-ng-init="getMenuData()">
+                    <div data-ng-if="!getMenuError" id="top-menu" class="navbar-collapse collapse">
+                        <div class="navbar-nav-container">
+                            <ul class="nav navbar-nav ng-cloak row" data-ng-cloak>
+                                <li data-ng-repeat="item in menuItems" class="dropdown col-sm-3">
+                                    <span data-ng-if="item.Url == ''">{{item.Name}}</span>
+                                    <a data-ng-if="item.HasChildren && item.Url != ''" href="{{item.Url}}" target="{{item.PropertyFrameName != '' ? item.PropertyFrameName : '_self'}}" class="dropdown-toggle" data-disabled="true" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        {{item.Name}}
+                                    </a>
+                                    <ul data-ng-if="item.HasChildren" class="dropdown-menu row">
+                                        <li>
+                                            <ul data-ng-repeat="it in item.SubMenuItem">
+                                                <li data-ng-class="item.length === 1 ? 'col-sm-12' :
+                                    item.length === 2 ? 'col-sm-6' :
+                                    item.length === 3 ? 'col-sm-4' : 'col-sm-4'">
+
+                                                    <a class="col-xs-12" href="{{it.Url}}">{{it.Name}}</a>
+                                                    <ul class="col-xs-12" ng-if="it.HasChildren">
+                                                        <li data-ng-repeat="i in it.SubMenuItem">
+                                                            <a class="col-xs-12" href="{{i.Url}}">{{i.Name}}</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="menu-separator"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-5 col-md-offset-1 col-lg-4 col-lg-offset-2">
+            <section class="heading">
+				<div class="row">
+					<div class="col-sm-12">
+						<h1 class="small-h1">Logg inn</h1>
+					</div>
+					<div class="col-sm-12">
+						<span class="separator-lg"></span>
+					</div>
+				</div>
+			</section>
+            <hr>
+            <form action="?" method="post" name="f">
+                <div class="form-group">
+                    <label for="username">Brukernavn</label>
+                    <input class="form-control" id="username" name="username" tabindex="1" type="text" value="">
+                </div>
+                <div class="form-group">
+                    <label for="password">Passord</label>
+                    <input class="form-control" id="password" name="password" tabindex="2" type="password" value="">
+                </div>
+                <button class="btn btn-success" tabindex="3" type="submit">Logg inn</button>
+                <input name="AuthState" type="hidden" value="_ccb6b2d825f149cb11f38d97cbd41cdcb8ab33008a:https://idp.statkart.no/simplesaml/saml2/idp/SSOService.php?spentityid=https%3A%2F%2Fkartkatalog.geonorge.no&amp;cookieTime=1458550936">
+	        </form>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4">
+	        <article>
+	            <h3>BAAT logg inn</h3>
+	            <p>En tjeneste har bedt om bekreftelse på din identitet. Skriv inn ditt BAAT brukernavn og passord for å autentisere deg.</p>
+	            <h3>Glemt passord</h3>
+	            <p>Kontakt Norge digitalt-sekretariatet for å få hjelp til å endre passordet. Send epost til: <a href="mailto:post@norgedigitalt.no?subject=Hjelp til passordbytte for BAAT">post@norgedigitalt.no</a></p>
+	        </article>
+        </div>
+    </div>
+</div>
+		<footer class="page-footer">
+			<div class="container container-footer">
+				<div>
+					<div class="block editorialblock col-md-12 col-lg-4 ">
+						<p><img alt="" src="/Content/bower_components/kartverket-felleskomponenter/assets/images/geonorge.png" height="87" width="381"></p>
+						<small>Versjon 4.3.534</small>
+						<ul class="editorialblock-list-item"></ul>
+					</div>
+					<div class="block editorialblock col-md-12 col-lg-4 ">
+						<h2>Om nettstedet:</h2>
+						<ul class="editorialblock-list-item">
+							<li>
+								<a href="http://www.geonorge.no//informasjon/om-geonorge/">Om Geonorge</a>
+							</li>
+							<li>
+								<a href="http://www.geonorge.no//informasjon/aktuelt/annet/personvern-og-bruk-av-cookies/">Personvern og bruk av cookies</a>
+							</li>
+						</ul>
+					</div>
+					<div class="block editorialblock col-md-12 col-lg-4 ">
+						<h2>Kontakt</h2>
+						<p><span style="font-family: 'Open Sans', sans-serif; font-size: 22px;">Telefon: 08700<br></span>Fra utlandet: +47 32 11 81 21<br><a title="post@norgedigitalt.no" href="mailto:post@norgedigitalt.no">post@norgedigitalt.no</a><br>Org. nr.: 971 040 238</p>
+						<hr>
+						<p>En løsning fra</p>
+						<p><img alt="" src="/Content/bower_components/kartverket-felleskomponenter/assets/images/kartverket.png" height="75" width="195"></p>
+						<ul class="editorialblock-list-item"></ul>
+					</div>
+				</div>
+			</div>
+		</footer>
+    </body>
+</html>

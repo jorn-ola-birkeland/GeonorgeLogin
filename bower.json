@@ -1,0 +1,8 @@
+{
+    "name": "geonorge-logginn",
+    "version": "0.0.1",
+    "dependencies": {
+        "kartverket-felleskomponenter": "0.0.21"
+    },
+    "private": true
+}
